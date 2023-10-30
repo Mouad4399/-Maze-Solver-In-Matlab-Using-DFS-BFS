@@ -22,7 +22,7 @@ MATLAB Maze Solver is an interactive graphical application built in MATLAB that 
 
 1. **Generate a Maze:**
    - Launch the application.
-   - Use the GUI to specify maze dimensions and click "Generate" to create a maze.
+   - Use the GUI to specify maze dimensions and click "Randomize" to create a maze.
    - Adjust the size and complexity of the maze using provided options.
 
 2. **Solve a Maze:**
@@ -31,7 +31,7 @@ MATLAB Maze Solver is an interactive graphical application built in MATLAB that 
    - Visualize the path as it is discovered.
 
 3. **Image to Maze:**
-   - Import a maze image using the "Load Image" button.
+   - Import a maze image using the "Choose Image" button.
    - The application will convert the image into a binary matrix.
    - Click "Solve" to find the solution.
 
@@ -40,4 +40,4 @@ MATLAB Maze Solver is an interactive graphical application built in MATLAB that 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/matlab-maze-solver.git
+   git clone https://github.com/Mouad4399/-Maze-Solver-In-Matlab-Using-DFS-BFS.git
