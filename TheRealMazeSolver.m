@@ -23,7 +23,7 @@ function varargout = TheRealMazeSolver(varargin)
 
 % Edit the above text to modify the response to help TheRealMazeSolver
 
-% Last Modified by GUIDE v2.5 26-Oct-2023 18:19:12
+% Last Modified by GUIDE v2.5 31-Oct-2023 01:22:28
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -97,7 +97,7 @@ function varargout = TheRealMazeSolver_OutputFcn(hObject, eventdata, handles)
 end
 
 % --- Executes on button press in randomize.
-function readymazematrix=randomize_Callback(hObject, eventdata, handles)
+function randomize_Callback(hObject, eventdata, handles)
 % hObject    handle to randomize (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -119,9 +119,15 @@ function readymazematrix=randomize_Callback(hObject, eventdata, handles)
         % iteration appraoch
         maze=zeros(sz);
         mid=fix(sz/2);
-        maze(mid+1+[0,1],mid+1+[0,1])=2;
-    %     middleSquareCoordinates = [mid+1, mid+1; mid+1, mid+1 + 1; mid+1 + 1, mid+1; mid+1 + 1, mid+1 + 1];
-        stack = [mid+1, mid+1];
+        maze(mid+1+[0,1],mid+1+[0,1])=1;
+        middleSquareCoordinates = [mid+1, mid+1; mid+1, mid+1 + 1; mid+1 + 1, mid+1; mid+1 + 1, mid+1 + 1];
+%         randxy =middleSquareCoordinates(randi(4),:);
+        randxy=[mid+1,mid+1];
+        
+        rx=randxy(1);
+        ry=randxy(2);
+        maze(rx,ry)=2;
+        stack = [rx, ry];
         outer=[mid+1, mid;mid, mid+1;  mid, mid+1 + 1 ; mid+1, mid+1 + 1+1;mid+1 + 1, mid ;mid+1 + 1+1, mid+1;mid+1 + 1+1, mid+1 + 1;mid+1 + 1, mid+1 + 1+1];
         directions = [0, 2; 2, 0; 0, -2; -2, 0];
         while ~isempty(stack)
@@ -168,7 +174,7 @@ function readymazematrix=randomize_Callback(hObject, eventdata, handles)
             0,1,0;
         ];
         colormap(cmap);
-        
+        maze(rx,ry)=1;
         readymazematrix= maze;
         handles.readymazematrix=readymazematrix;
         guidata(hObject,handles)
@@ -190,12 +196,33 @@ function solve_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
     readymazematrix=handles.readymazematrix;
     maze=readymazematrix ;
+    
     sz=size(maze,1);
     mid=fix(sz/2);
-    outer=[mid+1, mid;mid, mid+1;  mid, mid+1 + 1 ; mid+1, mid+1 + 1+1;mid+1 + 1, mid ;mid+1 + 1+1, mid+1;mid+1 + 1+1, mid+1 + 1;mid+1 + 1, mid+1 + 1+1];
     directions = [0, 1; 1, 0; 0, -1; -1, 0];
-    maze(2,2)=3;
-    queue=[2,2];
+%     choose starting point 
+    axes(handles.mazemap);
+    [sy,sx]=ginput(1);
+    sx=sz-fix(sx)+1;
+    sy=fix(sy);
+    maze(sx,sy)=4;
+
+    finmaze = flipud(maze);
+    finmaze(end+1,:) = finmaze(end,:); % Append last row
+    finmaze(:,end+1) = finmaze(:,end); % Append last column
+    pcolor(handles.mazemap,finmaze);
+    pause(0)
+                    
+                    
+%     choose ending point
+
+    [ey,ex]=ginput(1);
+    ex=sz-fix(ex)+1;
+    ey=fix(ey);
+    maze(ex,ey)=2;
+    
+
+    queue=[sx,sy];
     exception=0;
     parent = cell(sz,sz);
     while size(queue)>0 
@@ -250,7 +277,7 @@ function solve_Callback(hObject, eventdata, handles)
         end
     end
     path=destination;
-    while path(end,1)~=2 || path(end,2)~=2
+    while (path(end,1)~=sx || path(end,2)~=sy) 
         
         cmap = [
 
@@ -269,10 +296,9 @@ function solve_Callback(hObject, eventdata, handles)
         
         
        cellparent=parent{path(end,1),path(end,2)};
-       cx=cellparent(end,1)
-       cy=cellparent(end,2)
+       cx=cellparent(end,1);
+       cy=cellparent(end,2);
        maze(cx,cy)=4;
-       maze(cx,cy)
 
        path=cellparent; 
     end
@@ -311,8 +337,8 @@ function submit_Callback(hObject, eventdata, handles)
     % The round function is used to convert the mean values to 0 or 1
     mat = round(imresize(bin_img, [sz sz], 'bicubic'));
     
-    mid=fix(sz/2);
-    mat(mid+1+[0,1],mid+1+[0,1])=2;
+%     mid=fix(sz/2);
+%     mat(mid+1+[0,1],mid+1+[0,1])=2;
     cmap = [
 
     0.2,0.2,0.2;
@@ -336,7 +362,7 @@ function submit_Callback(hObject, eventdata, handles)
     handles.readymazematrix=readymazematrix;
     guidata(hObject,handles)
     
-    set(handles.solve,'enable','on');
+ 
 end
 
 
@@ -452,4 +478,34 @@ function size_label_CreateFcn(hObject, eventdata, handles)
     if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
         set(hObject,'BackgroundColor','white');
     end
+end
+
+
+% --- Executes on button press in Startingpt.
+function Startingpt_Callback(hObject, eventdata, handles)
+% hObject    handle to Startingpt (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+end
+
+% --- Executes on button press in Endingpt.
+function Endingpt_Callback(hObject, eventdata, handles)
+% hObject    handle to Endingpt (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+   set(handles.solve,'enable','on');
+end
+
+
+% --- Executes on button press in animation.
+function animation_Callback(hObject, eventdata, handles)
+% hObject    handle to animation (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of animation
 end
