@@ -201,7 +201,6 @@ function solve_Callback(hObject, eventdata, handles)
     mid=fix(sz/2);
     directions = [0, 1; 1, 0; 0, -1; -1, 0];
 %     choose starting point 
-    axes(handles.mazemap);
     [sy,sx]=ginput(1);
     sx=sz-fix(sx)+1;
     sy=fix(sy);
@@ -219,6 +218,7 @@ function solve_Callback(hObject, eventdata, handles)
     [ey,ex]=ginput(1);
     ex=sz-fix(ex)+1;
     ey=fix(ey);
+%     2 is the identifier of the ending point = destination
     maze(ex,ey)=2;
     
 
@@ -247,7 +247,6 @@ function solve_Callback(hObject, eventdata, handles)
                     nx = neighbor(1);
                     ny = neighbor(2);
                     if maze(nx,ny)==2
-%                         maze(nx,ny)=3;
                         destination = neighbor;
                         parent{nx, ny} = [x,y];
                         exception =1;
@@ -288,11 +287,11 @@ function solve_Callback(hObject, eventdata, handles)
             0,0,1;
         ];
         colormap(cmap);
-            finmaze = flipud(maze);
-            finmaze(end+1,:) = finmaze(end,:); % Append last row
-            finmaze(:,end+1) = finmaze(:,end); % Append last column
-            pcolor(handles.mazemap,finmaze);
-            pause(0)
+        finmaze = flipud(maze);
+        finmaze(end+1,:) = finmaze(end,:); % Append last row
+        finmaze(:,end+1) = finmaze(:,end); % Append last column
+        pcolor(handles.mazemap,finmaze);
+        pause(0)
         
         
        cellparent=parent{path(end,1),path(end,2)};
@@ -359,9 +358,10 @@ function submit_Callback(hObject, eventdata, handles)
     
     
     readymazematrix = mat;
+    
     handles.readymazematrix=readymazematrix;
     guidata(hObject,handles)
-    
+    set(handles.solve,'enable','on');
  
 end
 
