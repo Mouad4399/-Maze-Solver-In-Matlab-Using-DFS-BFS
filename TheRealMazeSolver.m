@@ -61,6 +61,8 @@ function TheRealMazeSolver_OpeningFcn(hObject, eventdata, handles, varargin)
 
     set(handles.solve,'enable','off');
     set(handles.submit,'enable','off');
+    set(handles.animation,'Value',1);
+    
 
 
     imagefile = '/preview.jpg';
@@ -196,7 +198,7 @@ function solve_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
     readymazematrix=handles.readymazematrix;
     maze=readymazematrix ;
-    
+   
     sz=size(maze,1);
     mid=fix(sz/2);
     directions = [0, 1; 1, 0; 0, -1; -1, 0];
@@ -253,11 +255,17 @@ function solve_Callback(hObject, eventdata, handles)
                         break
                     end
                     
-                    finmaze = flipud(maze);
-                    finmaze(end+1,:) = finmaze(end,:); % Append last row
-                    finmaze(:,end+1) = finmaze(:,end); % Append last column
-                    pcolor(handles.mazemap,finmaze);
-                    pause(0)
+                    
+                    if get(handles.animation,'Value')
+
+                            finmaze = flipud(maze);
+                            finmaze(end+1,:) = finmaze(end,:); % Append last row
+                            finmaze(:,end+1) = finmaze(:,end); % Append last column
+                            pcolor(handles.mazemap,finmaze);
+                            pause(0)
+                    end
+    
+                    
                     maze(nx,ny)=3;
                     
                     parent{nx, ny} = [x,y];
@@ -287,12 +295,14 @@ function solve_Callback(hObject, eventdata, handles)
             0,0,1;
         ];
         colormap(cmap);
-        finmaze = flipud(maze);
-        finmaze(end+1,:) = finmaze(end,:); % Append last row
-        finmaze(:,end+1) = finmaze(:,end); % Append last column
-        pcolor(handles.mazemap,finmaze);
-        pause(0)
-        
+        if get(handles.animation,'Value')
+
+                finmaze = flipud(maze);
+                finmaze(end+1,:) = finmaze(end,:); % Append last row
+                finmaze(:,end+1) = finmaze(:,end); % Append last column
+                pcolor(handles.mazemap,finmaze);
+                pause(0)
+        end
         
        cellparent=parent{path(end,1),path(end,2)};
        cx=cellparent(end,1);
@@ -478,26 +488,6 @@ function size_label_CreateFcn(hObject, eventdata, handles)
     if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
         set(hObject,'BackgroundColor','white');
     end
-end
-
-
-% --- Executes on button press in Startingpt.
-function Startingpt_Callback(hObject, eventdata, handles)
-% hObject    handle to Startingpt (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-end
-
-% --- Executes on button press in Endingpt.
-function Endingpt_Callback(hObject, eventdata, handles)
-% hObject    handle to Endingpt (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-   set(handles.solve,'enable','on');
 end
 
 
