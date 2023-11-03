@@ -384,6 +384,15 @@ function imagepath_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of imagepath as text
 %        str2double(get(hObject,'String')) returns contents of imagepath as a double
+
+     
+     set(handles.submit,'enable','on');
+     imagefile= get(handles.imagepath,'String');
+       I = imread(imagefile);
+       axes(handles.previewimage);
+       imshow(I);
+       handles.I = I;
+       guidata(hObject, handles);
 end
 
 
