@@ -1,7 +1,11 @@
 # MATLAB Maze Solver
 
 
-https://github.com/Mouad4399/-Maze-Solver-In-Matlab-Using-DFS-BFS/assets/130489466/68aacee3-410b-4b4b-8be7-1826c02fad47
+<!--  https://github.com/Mouad4399/-Maze-Solver-In-Matlab-Using-DFS-BFS/assets/130489466/68aacee3-410b-4b4b-8be7-1826c02fad47
+-->
+
+
+https://github.com/user-attachments/assets/0722c792-899c-4f79-982c-33906af641f3
 
 
 
